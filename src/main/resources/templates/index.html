@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div class="admin-info">
+            <h2>Admin Name</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/employees/list" onclick="loadContent(event, this.href)">Employees Info</a></li>
+                <li><a href="/salaries/list" onclick="loadContent(event, this.href)">Salary Info</a></li>
+                <li><a href="/attendances/list" onclick="loadContent(event, this.href)">Attendance Info</a></li>
+                <li><a href="/leaves/list" onclick="loadContent(event, this.href)">Leave Info</a></li>
+
+            </ul>
+
+        </nav>
+    </div>
+    <div class="main-content" id="main-content">
+        <!-- Right column content will go here -->
+
+    </div>
+</div>
+<script src="/css/js/script.js"></script>
+</body>
+
+<!-- JavaScript begin-->
+<script>
+    // loads the content of the different pages dynamically onclick on the link
+    let str = ""
+    let history = [];
+    function loadContent(event, url) {
+        if(event){
+            event.preventDefault()
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('main-content').innerHTML = html;
+                // Store the current URL in sessionStorage for history tracking
+                history = JSON.parse(sessionStorage.getItem('history')) || [];
+                history.push(url);
+                //set a new history;
+                let newHistory = [history[history.length-1]];
+                // set a new history end
+                sessionStorage.setItem('history', JSON.stringify(newHistory));
+
+
+            })
+            .catch(error => {
+                console.error('Error loading the page:', error);
+            });
+    }
+
+
+    // Handle on reload begin
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+        history = JSON.parse(sessionStorage.getItem('history')) || [];
+        str = history[history.length-1] || "";
+        let newHistory = [str];
+
+        //set the new history
+        sessionStorage.setItem('history', JSON.stringify(newHistory));
+        // set the new history end
+       if(str === ""){
+            loadContent(null, 'employees/list');
+        }else {
+            loadContent(null, str);
+        }
+
+    });
+// handle on reload ends
+
+
+    // Event delegation to handle button clicks within dynamically loaded content begin
+    document.getElementById('main-content').addEventListener('submit', function(event) {
+        if (event.target.matches('.detailForm')) {
+            event.preventDefault();
+            const url = event.target.action || "";
+            loadContent(null, url);
+
+
+        }
+    });
+
+    // handle on click grand child
+
+</script>
+<!-- JavaScript Ends-->
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    User Info:
+    first name: <span th:text="${employee.firstName}"></span> <br>
+    last name: <span th:text="${employee.lastName}"></span> <br>
+    Email: <span th:text="${employee.email}"></span> <br>
+    Department: <span th:text="${employee.department}"></span> <br>
+</div>
+<!-- leave Begins-->
+<h3>Leave Details</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Leave ID</th>
+        <th>Reason</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="leave : ${employee.getLeaves()}">
+        <td th:text="${leave.id}"></td>
+        <td th:text="${leave.reason}"></td>
+        <td th:text="${leave.startDate}"></td>
+        <td th:text="${leave.endDate}"></td>
+    </tr>
+    </tbody>
+</table>
+<!-- leave Ends-->
+
+<!-- Attendance Begins-->
+<h3>Attendance Details</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Attendance ID</th>
+        <th>Date</th>
+        <th>Present</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="attendance : ${employee.getAttendances()}">
+        <td th:text="${attendance.id}"></td>
+        <td th:text="${attendance.getDate()}"></td>
+        <td th:text="${attendance.isPresent()}"></td>
+    </tr>
+    </tbody>
+</table>
+<!-- Attendance Ends-->
+
+<!-- Salary Begins-->
+<h3>Salary Details</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Salary ID</th>
+        <th>Date</th>
+        <th>Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="salary : ${employee.getSalaries()}">
+        <td th:text="${salary.id}"></td>
+        <td th:text="${salary.getDate()}"></td>
+        <td th:number="${salary.getSalary()}"></td>
+    </tr>
+    </tbody>
+</table>
+<!-- Salary Ends-->
+</body>
+</html>

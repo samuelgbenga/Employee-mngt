@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:if="${employeeLeave.id == null}" th:action="@{/leaves}" th:object="${employeeLeave}" method="post">
+
+    <label for="employeeId">Employee ID:</label>
+    <input type="text" id="employeeId" th:field="*{employee.id}" /><br/>
+
+    <label for="employeeFirstName">First Name:</label>
+    <input type="text" id="employeeFirstName" th:field="*{employee.firstName}" /><br/>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" th:field="*{employee.lastName}" /><br/>
+
+    <label for="reason">Reason:</label>
+    <input type="text" id="reason" th:field="*{reason}" /><br/>
+
+    <label for="start_date">Start Date:</label>
+    <input type="text" id="start_date" th:field="*{startDate}" /><br/>
+
+    <label for="end_date">End Date:</label>
+    <input type="text" id="end_date" th:field="*{endDate}" /><br/>
+
+    <button type="submit">Submit</button>
+
+</form>
+<!--update the employee leaf begin--->
+
+<form th:if="${employeeLeave.id != null}" th:action="@{/leaves/{id}(id=${employeeLeave.id})}" th:object="${employeeLeave}" method="post">
+
+    <label for="updateEmployeeFirstName">First Name:</label>
+    <input type="text" id="updateEmployeeFirstName" th:field="*{employee.firstName}" /><br/>
+
+    <label for="updateLastName">Last Name:</label>
+    <input type="text" id="updateLastName" th:field="*{employee.lastName}" /><br/>
+
+    <label for="updateReason">Reason:</label>
+    <input type="text" id="updateReason" th:field="*{reason}" /><br/>
+
+    <label for="updateStart_date">Start Date:</label>
+    <input type="text" id="updateStart_date" th:field="*{startDate}" /><br/>
+
+    <label for="updateEnd_date">End Date:</label>
+    <input type="text" id="updateEnd_date" th:field="*{endDate}" /><br/>
+
+    <button type="submit">Update</button>
+
+</form>
+
+<!--update the employee leaf end--->
+
+</body>
+</html>

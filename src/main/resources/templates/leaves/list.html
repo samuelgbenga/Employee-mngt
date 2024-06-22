@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Employee Leave List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Employee ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Reason</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Delete</th>
+        <th>Update</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="leave: ${employeeLeaves}">
+        <td th:text="${leave.employee.id}"></td>
+        <td th:text="${leave.employee.firstName}"></td>
+        <td th:text="${leave.employee.lastName}"></td>
+        <td th:text="${leave.reason}"></td>
+        <td th:text="${leave.startDate}"></td>
+        <td th:text="${leave.endDate}"></td>
+        <td>
+            <form th:action="@{/leaves/delete/{id}(id=${leave.id})}" method="get">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/leaves/edit/{id}(id=${leave.id})}" method="get">
+                <button type="submit">Update</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<button onclick="toggleNewForm('newLeave')" id="buttonId" >
+    Enter Employee Leave
+</button>
+<div id="newLeave" style="display: none">
+    <form th:action="@{/leaves}" th:object="${newEmployeeLeaves}" method="post">
+
+        <label for="employeeId">Employee ID:</label>
+        <input type="text" id="employeeId" th:field="*{employee.id}" required/><br/>
+
+        <label for="employeeFirstName">First Name:</label>
+        <input type="text" id="employeeFirstName" th:field="*{employee.firstName}" /><br/>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{employee.lastName}" /><br/>
+
+        <label for="reason">Reason:</label>
+        <input type="text" id="reason" th:field="*{reason}" required/><br/>
+
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" th:field="*{startDate}" /><br/>
+
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" th:field="*{endDate}" /><br/>
+
+        <button type="submit">Submit</button>
+
+    </form>
+</div>
+</body>
+</html>

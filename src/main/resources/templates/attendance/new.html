@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Form</title>
+</head>
+<body>
+<form th:if="${attendance.id == null} " th:action="@{/attendances}" th:object="${attendance}" method="post">
+
+  <label for="employeeId">Employee ID:</label>
+  <input type="text" id="employeeId" th:field="*{employee.id}" /><br/>
+
+  <label for="employeeFirstName">First Name:</label>
+  <input type="text" id="employeeFirstName" th:field="*{employee.firstName}" /><br/>
+
+  <label for="lastName">Last Name:</label>
+  <input type="text" id="lastName" th:field="*{employee.lastName}" /><br/>
+
+  <label for="present">Present:</label>
+  <select id="present" th:field="*{present}">
+    <option value="true">Present</option>
+    <option value="false">Absent</option>
+  </select><br/>
+
+  <label for="Date">Date:</label>
+  <input type="text" id="Date" th:field="*{date}" /><br/>
+
+  <button type="submit">Submit</button>
+
+</form>
+
+<!-- update the attendance list begin--->
+
+<form th:if="${attendance.id != null} " th:action="@{/attendances/{id}(id=${attendance.id})}" th:object="${attendance}" method="post">
+
+  <label for="updateEmployeeFirstName">First Name:</label>
+  <input type="text" id="updateEmployeeFirstName" th:field="*{employee.firstName}" /><br/>
+
+  <label for="updateLastName">Last Name:</label>
+  <input type="text" id="updateLastName" th:field="*{employee.lastName}" /><br/>
+
+  <label for="updatePresent">Present:</label>
+  <select id="updatePresent" th:field="*{present}">
+    <option value="true">Present</option>
+    <option value="false">Absent</option>
+  </select><br/>
+
+  <label for="updateDate">Date:</label>
+  <input type="text" id="updateDate" th:field="*{date}" /><br/>
+
+  <button type="submit">Update</button>
+
+</form>
+<!-- update the attendance list ends--->
+
+</body>
+</html>

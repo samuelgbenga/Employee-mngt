@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Attendance List</title>
+</head>
+<body>
+<h1>Employee Attendance List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Employee ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Present</th>
+        <th>Date</th>
+        <th>Delete</th>
+        <th>Update</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="attendance: ${attendanceList}">
+        <td th:text="${attendance.employee.id}"></td>
+        <td th:text="${attendance.employee.firstName}"></td>
+        <td th:text="${attendance.employee.lastName}"></td>
+        <td th:text="${attendance.isPresent()}"></td>
+        <td th:text="${attendance.date}"></td>
+        <td>
+            <form th:action="@{/attendances/delete/{id}(id=${attendance.id})}" method="get">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/attendances/edit/{id}(id=${attendance.id})}" method="get">
+                <button type="submit">Update</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<button onclick="toggleNewForm('newAttendance')" id="buttonId" >
+    Add Employee Attendance
+</button>
+
+<div id="newAttendance" style="display: none">
+    <form th:action="@{/attendances}" th:object="${newAttendance}" method="post">
+
+        <label for="employeeId">Employee ID:</label>
+        <input type="text" id="employeeId" th:field="*{employee.id}" /><br/>
+
+        <label for="employeeFirstName">First Name:</label>
+        <input type="text" id="employeeFirstName" th:field="*{employee.firstName}" /><br/>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{employee.lastName}" /><br/>
+
+        <label for="present">Present:</label>
+        <select id="present" th:field="*{present}">
+            <option value="true">Present</option>
+            <option value="false">Absent</option>
+        </select><br/>
+
+        <label for="Date">Date:</label>
+        <input type="date" id="Date" th:field="*{date}" /><br/>
+
+        <button type="submit">Submit</button>
+
+    </form>
+</div>
+
+</body>
+</html>

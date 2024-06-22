@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new Salary</title>
+</head>
+<body>
+<form th:if="${salary.id == null}" th:action="@{/salaries}" th:object="${salary}" method="post">
+
+    <label for="employeeId">Employee ID:</label>
+    <input type="text" id="employeeId" th:field="*{employee.id}" /><br/>
+
+    <label for="employeeFirstName">First Name:</label>
+    <input type="text" id="employeeFirstName" th:field="*{employee.firstName}" /><br/>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" th:field="*{employee.lastName}" /><br/>
+
+    <label for="salary">Salary:</label>
+    <input type="number" id="salary" th:field="*{salary}" /><br/>
+
+    <label for="date">date:</label>
+    <input type="text" id="date" th:field="*{date}" /><br/>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+<!--Edit form begins-->
+<form th:if="${salary.id != null}" th:action="@{/salaries/{id}(id=${salary.id})}" th:object="${salary}" method="post">
+
+    <label for="updateEmployeeFirstName">First Name:</label>
+    <input type="text" id="updateEmployeeFirstName" th:field="*{employee.firstName}" /><br/>
+
+    <label for="updateLastName">Last Name:</label>
+    <input type="text" id="updateLastName" th:field="*{employee.lastName}" /><br/>
+
+    <label for="updateSalary">Salary:</label>
+    <input type="number" id="updateSalary" th:field="*{salary}" /><br/>
+
+    <label for="updateDate">Date:</label>
+    <input type="text" id="updateDate" th:field="*{date}" /><br/>
+
+    <button type="submit">Update</button>
+
+</form>
+<!--Edit form ends-->
+</body>
+</html>
