@@ -3,72 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <title>Employee Attendance List</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/listStyle.css">
 </head>
+
+
 <body>
 <h1>Employee Attendance List</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Employee ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Present</th>
-        <th>Date</th>
-        <th>Delete</th>
-        <th>Update</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="attendance: ${attendanceList}">
-        <td th:text="${attendance.employee.id}"></td>
-        <td th:text="${attendance.employee.firstName}"></td>
-        <td th:text="${attendance.employee.lastName}"></td>
-        <td th:text="${attendance.isPresent()}"></td>
-        <td th:text="${attendance.date}"></td>
-        <td>
-            <form th:action="@{/attendances/delete/{id}(id=${attendance.id})}" method="get">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-        <td>
-            <form th:action="@{/attendances/edit/{id}(id=${attendance.id})}" method="get">
-                <button type="submit">Update</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+
+<!---Main List Begins-->
+<div class="container-attendance">
+<div class="table" >
+    <div class="thead">
+    <div class="tr">
+
+        <div class="th">First Name</div>
+        <div class="th">Last Name</div>
+        <div class="th">Present</div>
+        <div class="th">Date</div>
+        <div class="th">Actions</div>
+
+    </div>
+    </div>
+    <div class="tbody">
+    <div class="tr" th:each="attendance: ${attendanceList}">
+        <!-- normal list Begins-->
+        <div class="innerTr-main-info" th:id="'edit'+${attendance.id}">
+
+            <div class="td" th:text="${attendance.employee.firstName}"></div>
+            <div class="td" th:text="${attendance.employee.lastName}"></div>
+            <div class="td" th:text="${attendance.isPresent()}"></div>
+            <div class="td" th:text="${attendance.date}"></div>
+            <div class="td actions">
+                <form th:action="@{/attendances/delete/{id}(id=${attendance.id})}" method="get">
+                    <button type="submit">Delete</button>
+                </form>
+
+                <button th:onclick="'toggleUpdate(\'edit'+ ${attendance.id} +'\', \'update'+ ${attendance.id} +'\' );'">Edit</button>
+
+            </div>
+        </div>
+        <!-- normal list ends-->
+
+        <!-- update list begins-->
+        <form th:action="@{/attendances/{id}(id=${attendance.id})}" class="innerTr-updateInfo" style="display:none;" th:id="'update'+${attendance.id}" th:object="${newAttendance}" method="post">
 
 
+            <div class="td" th:text="${attendance.employee.firstName}"></div>
+            <div class="td" th:text="${attendance.employee.lastName}"></div>
+
+            <select class="td" id="updatePresent" th:placeholder="${attendance.isPresent()}" th:field="*{present}">
+                <option value="true">Present</option>
+                <option value="false">Absent</option>
+            </select>
+            <input class="td" type="date" id="updateDate" th:placeholder="${attendance.date}" th:field="*{date}" />
+            <button class="td" type="submit">Update</button>
+        </form>
+        <!-- update list ends-->
+    </div>
+    </div>
+</div>
+</div>
+<!---Main List Ends-->
+
+<!--add new begin--->
 <button onclick="toggleNewForm('newAttendance')" id="buttonId" >
     Add Employee Attendance
 </button>
-
 <div id="newAttendance" style="display: none">
-    <form th:action="@{/attendances}" th:object="${newAttendance}" method="post">
+    <form th:action="@{/attendances}" th:object="${newAttendance}" method="post" class="add-form-container newAttendanceForm">
 
-        <label for="employeeId">Employee ID:</label>
-        <input type="text" id="employeeId" th:field="*{employee.id}" /><br/>
+        <div class="data-group">
+            <label for="employeeList">Employee</label>
+            <select id="employeeList" th:field="*{employee.id}">
+                <option th:each="singleEmployee : ${employeeList}"
+                        th:value="${singleEmployee.id}"
+                        th:text="${singleEmployee.firstName}+' '+${singleEmployee.lastName}">
+                </option>
+            </select>
+        </div>
 
-        <label for="employeeFirstName">First Name:</label>
-        <input type="text" id="employeeFirstName" th:field="*{employee.firstName}" /><br/>
+        <div class="data-group">
+            <label for="present">Present:</label>
+            <select id="present" th:field="*{present}">
+                <option value="true">Present</option>
+                <option value="false">Absent</option>
+            </select><br/>
+        </div>
 
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" th:field="*{employee.lastName}" /><br/>
+        <div class="data-group">
+            <label for="Date">Date:</label>
+            <input type="date" id="Date" th:field="*{date}" /><br/>
 
-        <label for="present">Present:</label>
-        <select id="present" th:field="*{present}">
-            <option value="true">Present</option>
-            <option value="false">Absent</option>
-        </select><br/>
-
-        <label for="Date">Date:</label>
-        <input type="date" id="Date" th:field="*{date}" /><br/>
+        </div>
 
         <button type="submit">Submit</button>
 
     </form>
 </div>
+<!--add new ends--->
 
 </body>
 </html>

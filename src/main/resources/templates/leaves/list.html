@@ -3,70 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/listStyle.css">
 </head>
 <body>
 <h1>Employee Leave List</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Employee ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Reason</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Delete</th>
-        <th>Update</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="leave: ${employeeLeaves}">
-        <td th:text="${leave.employee.id}"></td>
-        <td th:text="${leave.employee.firstName}"></td>
-        <td th:text="${leave.employee.lastName}"></td>
-        <td th:text="${leave.reason}"></td>
-        <td th:text="${leave.startDate}"></td>
-        <td th:text="${leave.endDate}"></td>
-        <td>
-            <form th:action="@{/leaves/delete/{id}(id=${leave.id})}" method="get">
-                <button type="submit">Delete</button>
+
+<!--main list Begins--->
+<div class="container-leave">
+    <div class="table">
+        <div class="thead">
+        <div class="tr">
+            <div class="th">First Name</div>
+            <div class="th">Last Name</div>
+            <div class="th">Reason</div>
+            <div class="th">Start Date</div>
+            <div class="th">End Date</div>
+            <div class="th">Actions</div>
+        </div>
+        </div>
+        <div class="tbody">
+        <div class="tr" th:each="leave: ${employeeLeaves}">
+
+            <!--main list begin--->
+            <div class="innerTr-main-info" th:id="'edit'+${leave.id}">
+
+                <div class="td" th:text="${leave.employee.firstName}"></div>
+                <div class="td" th:text="${leave.employee.lastName}"></div>
+                <div class="td" th:text="${leave.reason}"></div>
+                <div class="td" th:text="${leave.startDate}"></div>
+                <div class="td" th:text="${leave.endDate}"></div>
+                <div class="td actions">
+                    <form th:action="@{/leaves/delete/{id}(id=${leave.id})}" method="get">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <!---The update btn. the backstabbing juliet that makes it all go Begins-->
+                    <button  th:onclick="'toggleUpdate(\'edit'+ ${leave.id} +'\', \'update'+ ${leave.id} +'\' );'">Edit</button>
+                </div>
+
+            </div>
+            <!--main list ends--->
+            <!--update list begin--->
+            <form th:action="@{/leaves/{id}(id=${leave.id})}"  class="innerTr-updateInfo" style="display:none;" th:id="'update'+${leave.id}" th:object="${newEmployeeLeaves}" method="post">
+
+                <div class="td" th:text="${leave.employee.firstName}"></div>
+                <div class="td" th:text="${leave.employee.lastName}"></div>
+
+                <input type="text" id="updateReason" th:field="*{reason}" th:placeholder="${leave.reason}" />
+                <input type="date" id="updateStart_date" th:field="*{startDate}" th:placeholder="${leave.startDate}" />
+                <input type="date" id="updateEnd_date" th:field="*{endDate}" th:placeholder="${leave.endDate}"/>
+
+                <button class="td" type="submit">
+                    Update
+                </button>
             </form>
-        </td>
-        <td>
-            <form th:action="@{/leaves/edit/{id}(id=${leave.id})}" method="get">
-                <button type="submit">Update</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+            <!--update list ends--->
+        </div>
+        </div>
+    </div>
+</div>
+<!--main list Ends--->
+
+
+
+<!--add new list Begins--->
 <button onclick="toggleNewForm('newLeave')" id="buttonId" >
     Enter Employee Leave
 </button>
 <div id="newLeave" style="display: none">
-    <form th:action="@{/leaves}" th:object="${newEmployeeLeaves}" method="post">
+    <form th:action="@{/leaves}" th:object="${newEmployeeLeaves}" method="post" class="add-form-container newLeaveForm">
 
-        <label for="employeeId">Employee ID:</label>
-        <input type="text" id="employeeId" th:field="*{employee.id}" required/><br/>
+        <div class="data-group">
 
-        <label for="employeeFirstName">First Name:</label>
-        <input type="text" id="employeeFirstName" th:field="*{employee.firstName}" /><br/>
+            <label for="employeeList">Employee</label>
+            <select id="employeeList" th:field="*{employee.id}">
+                <option th:each="singleEmployee : ${employeeList}"
+                        th:value="${singleEmployee.id}"
+                        th:text="${singleEmployee.firstName}+' '+${singleEmployee.lastName}">
+                </option>
+            </select>
+        </div>
 
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" th:field="*{employee.lastName}" /><br/>
+        <div class="data-group">
+            <label for="reason">Reason:</label>
+            <input type="text" id="reason" th:field="*{reason}" required/>
+        </div>
 
-        <label for="reason">Reason:</label>
-        <input type="text" id="reason" th:field="*{reason}" required/><br/>
+        <div class="data-group">
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" th:field="*{startDate}" />
+        </div>
 
-        <label for="start_date">Start Date:</label>
-        <input type="date" id="start_date" th:field="*{startDate}" /><br/>
-
-        <label for="end_date">End Date:</label>
-        <input type="date" id="end_date" th:field="*{endDate}" /><br/>
+        <div class="data-group">
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" th:field="*{endDate}" />
+        </div>
 
         <button type="submit">Submit</button>
 
     </form>
 </div>
+<!--add new list ends--->
+
+
 </body>
 </html>

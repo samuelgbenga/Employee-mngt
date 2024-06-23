@@ -10,24 +10,18 @@ function toggleNewForm(actionFor){
 }
 
 let isUpdate = true;
-function toggleUpdate(editButton, updateButton, info, update){
+function toggleUpdate(editButton, updateButton){
     isUpdate = !isUpdate;
     const updateBtn = document.getElementById(updateButton);
     const editBtn = document.getElementById(editButton);
-    const infoBtn = document.getElementsByClassName(info);
-    const actualUpdate = document.getElementById(update);
+
+
+    console.log("hello world");
 
     if(!isUpdate){
-        updateBtn.style.display = "block";
+        updateBtn.style.display = '';
         editBtn.style.display = "none";
 
-        for (let i = 0; i < infoBtn.length; i++) {
-            infoBtn[i].style.display = 'none';
-
-        }
-
-
-
-        console.log(update);
     }
+
 }

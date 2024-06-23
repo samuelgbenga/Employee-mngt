@@ -3,69 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/listStyle.css">
 </head>
 <body>
 <h1>Salary List</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Employee ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Salary</th>
-        <th>Date</th>
-        <th>Delete</th>
-        <th>Update</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="salary: ${salaries}">
-        <td th:text="${salary.employee.id}"></td>
-        <td th:text="${salary.employee.firstName}"></td>
-        <td th:text="${salary.employee.lastName}"></td>
-        <td th:text="${salary.salary}"></td>
-        <td th:text="${salary.date}"></td>
-        <td>
-            <form th:action="@{/salaries/delete/{id}(id=${salary.id})}" method="get">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
 
-        <td>
-            <form th:action="@{/salaries/edit/{id}(id=${salary.id})}" method="get">
-                <button type="submit">Update</button>
-            </form>
-        </td>
+<!-- container salary Start--->
+<div class="container-salary">
 
-    </tr>
-    </tbody>
-</table>
+    <div class="table">
+        <div class="thead">
+            <div class="tr">
+
+                <div class="th">First Name</div>
+                <div class="th">Last Name</div>
+                <div class="th">Salary</div>
+                <div class="th">Date</div>
+                <div class="th">Actions</div>
+
+            </div>
+        </div>
+        <div class="tbody">
+            <div class="tr" th:each="salary: ${salaries}">
+                <div class="innerTr-main-info" th:id="'edit'+${salary.id}">
+                    <div class="td" th:text="${salary.employee.firstName}"></div>
+                    <div class="td" th:text="${salary.employee.lastName}"></div>
+                    <div class="td" th:text="'$'+${salary.salary}"></div>
+                    <div class="td" th:text="${salary.date}"></div>
+                    <div class="td actions" >
+                        <form th:action="@{/salaries/delete/{id}(id=${salary.id})}" method="get">
+                            <button type="submit">Delete</button>
+                        </form>
+
+                        <button  th:onclick="'toggleUpdate(\'edit'+ ${salary.id} +'\', \'update'+ ${salary.id} +'\' );'">Edit</button>
+                    </div>
+                    <!-- start the update form-->
+                </div>
+                <form th:action="@{/salaries/{id}(id=${salary.id})}" class="innerTr-updateInfo" style="display: none" th:id="'update'+${salary.id}" th:object="${salaryNew}" method="post">
+
+                    <div class="td" th:text="${salary.employee.firstName}"></div>
+                    <div class="td" th:text="${salary.employee.lastName}"></div>
+
+                    <input class="td" type="number" id="updateSalary" th:field="*{salary}" th:placeholder="${salary.salary}" />
+
+
+                    <input class="td" type="date" id="updateDate" th:field="*{date}" th:placeholder="${salary.date}" />
+                        <button type="submit" class="td">
+                            Update
+                        </button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- container salary End--->
+
+
+<!---add new salary Starts--->
 <button onclick="toggleNewForm('newSalary')" id="buttonId" >
     Add new Salary
 </button>
-
 <div style="display: none" id="newSalary">
-    <form th:action="@{/salaries}" th:object="${salaryNew}" method="post">
+    <form th:action="@{/salaries}" th:object="${salaryNew}" method="post" class="add-form-container newSalaryForm">
 
-        <label for="employeeId">Employee ID:</label>
-        <input type="text" id="employeeId" th:field="*{employee.id}" /><br/>
+        <div class="data-group">
+            <label for="employeeList">Employee</label>
+            <select id="employeeList" th:field="*{employee.id}">
+                <option th:each="singleEmployee : ${employeeList}"
+                        th:value="${singleEmployee.id}"
+                        th:text="${singleEmployee.firstName}+' '+${singleEmployee.lastName}">
+                </option>
+            </select>
 
-        <label for="employeeFirstName">First Name:</label>
-        <input type="text" id="employeeFirstName" th:field="*{employee.firstName}" /><br/>
+        </div>
 
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" th:field="*{employee.lastName}" /><br/>
+        <div class="data-group">
 
-        <label for="salary">Salary:</label>
-        <input type="number" id="salary" th:field="*{salary}" /><br/>
+            <label for="salary">Salary:</label>
+            <input type="number" id="salary" th:field="*{salary}" /><br/>
 
-        <label for="date">date:</label>
-        <input type="date" id="date" th:field="*{date}" /><br/>
+        </div>
+
+        <div class="data-group">
+            <label for="date">date:</label>
+            <input type="date" id="date" th:field="*{date}" /><br/>
+        </div>
 
         <button type="submit">Submit</button>
 
     </form>
 </div>
+<!---add new salary Ends--->
+
+
 
 </body>
 </html>

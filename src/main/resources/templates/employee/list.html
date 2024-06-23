@@ -3,86 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Employee List</title>
-
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/listStyle.css">
 </head>
 <body>
-
 <h1>Employee List</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Employee ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Department</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="employee : ${employees}">
+<!-- main list begins -->
+<div class="container-employee">
 
-        <td th:text="${employee.id}">
-        </td>
-        <td th:text="${employee.firstName}" th:class="'employeeInfo'+${employee.id}"></td>
+<div class="table">
+    <div class="thead">
+    <div class="tr">
+        <div class="th">ID</div>
+        <div class="th">First Name</div>
+        <div class="th">Last Name</div>
+        <div class="th">Email</div>
+        <div class="th">Department</div>
+        <div class="th">Actions</div>
+    </div>
+    </div>
+    <div class="tbody">
 
+    <div class="tr" th:each="employee : ${employees}">
 
+        <!--wrap them in a box begin-->
+        <div class="innerTr-main-info" th:id="'edit'+${employee.id}">
+        <div class="td" th:text="${employee.id}">
+        </div>
+        <div class="td" th:text="${employee.firstName}" ></div>
 
-        <td th:text="${employee.lastName}" th:class="'employeeInfo'+${employee.id}"></td>
+        <div class="td" th:text="${employee.lastName}" ></div>
 
+        <div class="td" th:text="${employee.email}"></div>
 
-        <td th:text="${employee.email}" th:class="'employeeInfo'+${employee.id}"></td>
+        <div class="td" th:text="${employee.department}"></div>
 
-
-
-        <td th:text="${employee.department}" th:class="'employeeInfo'+${employee.id}"></td>
-
-        <td style="display: flex">
+        <div class="td actions">
             <form th:action="@{/employees/delete/{id}(id=${employee.id})}" method="get" class="employeeActions">
                 <button type="submit">Delete</button>
             </form>
 
             <!---The update btn. the backstabbing juliet that makes it all go Begins-->
-            <button th:onclick="'toggleUpdate(\'edit'+ ${employee.id} +'\', \'update'+ ${employee.id} +'\', \'employeeInfo'+ ${employee.id} +'\' , \'updateEmployeeInfo'+ ${employee.id} +'\' );'" th:id="'edit'+${employee.id}">Edit</button>
-            <form th:onclick="'toggleUpdate(\'edit'+ ${employee.id} +'\', \'update'+ ${employee.id} +'\', \'employeeInfo'+ ${employee.id} +'\' , \'updateEmployeeInfo'+ ${employee.id} +'\' );'"  th:id="'update'+${employee.id}" style="display: none">
-                <button >Update</button>
-            </form>
-
-            <!---The update btn. the backstabbing juliet that makes it all go Ends-->
+            <button  th:onclick="'toggleUpdate(\'edit'+ ${employee.id} +'\', \'update'+ ${employee.id} +'\' );'">Edit</button>
 
         <!-- more info begins -->
          <form th:action="@{/employees/get/{id}(id=${employee.id})}" method="get" class="detailForm">
             <button type="submit" >Details</button>
         </form>
-        </td>
+        </div>
+    </div>
+        <!--wrap them in a box begin-->
+        <!-- show form now instead begins -->
+        <form th:action="@{/employees/{id}(id=${employee.id})}"  class="innerTr-updateInfo" style="display:none;" th:id="'update'+${employee.id}" th:object="${newEmployee}" method="post" >
+            <div class="td" th:text="${employee.id}"></div>
+            <input type="text" id="updateFirstName" th:field="*{firstName}" th:placeholder="${employee.firstName}"  />
+            <input type="text" id="updateLastName" th:field="*{lastName}"  th:placeholder="${employee.lastName}" required/>
+            <input type="email" id="updateEmail"  th:field="*{email}" th:placeholder="${employee.email}" required/>
+            <input type="text" id="updateDepartment" th:field="*{department}" th:placeholder="${employee.department}" required/>
 
+                <button class="td" type="submit">
+                    Update
+                </button>
 
-        <!-- more info begins -->
+        </form>
+        <!-- show form now instead Ends -->
+    </div>
+    </div>
+</div>
+</div>
+<!-- main list begins -->
 
-    </tr>
-    </tbody>
-</table>
-
-    <button onclick="toggleNewForm('newForm')" id="buttonId" >
+<!-- add new Begins -->
+<button onclick="toggleNewForm('newForm')" id="buttonId" >
     Add new Employee
 </button>
-
 <div>
     <div Style="display: none" id="newForm">
-        <form th:action="@{/employees}" th:object="${newEmployee}" method="post">
+        <form th:action="@{/employees}" th:object="${newEmployee}" method="post" class="add-form-container newEmployeeForm">
+            <div class="data-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" th:field="*{firstName}" required/><br/>
 
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" th:field="*{firstName}" /><br/>
+            </div>
+            <div class="data-group">
 
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" th:field="*{lastName}" /><br/>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" th:field="*{lastName}"  required/><br/>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}" /><br/>
+            </div>
+            <div class="data-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" th:field="*{email}"  required/><br/>
+            </div>
 
-            <label for="department">Department:</label>
-            <input type="text" id="department" th:field="*{department}" /><br/>
+         <div class="data-group">
+             <label for="department">Department:</label>
+             <input type="text" id="department" th:field="*{department}"  required/><br/>
 
+         </div>
             <button type="submit">Submit</button>
 
         </form>
@@ -91,9 +109,11 @@
     </div>
 
 </div>
-
+<!-- add new Ends -->
 
 
 </body>
 
 </html>
+
+

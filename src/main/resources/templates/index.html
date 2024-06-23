@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/listStyle.css}">
 
 
 </head>
-<body>
+
+<body th:if="${adminDetails.getUsername() != null}">
 <div class="container">
     <div class="sidebar">
         <div class="admin-info">
-            <h2>Admin Name</h2>
+            <h2 th:text="${adminDetails.username}">Admin Name</h2>
         </div>
         <nav>
             <ul>
@@ -20,7 +22,7 @@
                 <li><a href="/salaries/list" onclick="loadContent(event, this.href)">Salary Info</a></li>
                 <li><a href="/attendances/list" onclick="loadContent(event, this.href)">Attendance Info</a></li>
                 <li><a href="/leaves/list" onclick="loadContent(event, this.href)">Leave Info</a></li>
-
+                <li><a href="/logout">Logout</a></li>
             </ul>
 
         </nav>
@@ -33,6 +35,31 @@
 <script src="/css/js/script.js"></script>
 </body>
 
+<body id="login-body" th:if="${adminDetails.getUsername() == null}" >
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="login-container">
+    <h2 class="text-center">Admin Login</h2>
+    <form th:action="@{/}" th:object="${adminDetails}" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input th:field="*{username}" type="text" id="username" name="username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input th:field="*{password}" type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
 <!-- JavaScript begin-->
 <script>
     // loads the content of the different pages dynamically onclick on the link
@@ -43,7 +70,11 @@
             event.preventDefault()
         }
 
-        fetch(url)
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
             .then(response => response.text())
             .then(html => {
                 document.getElementById('main-content').innerHTML = html;

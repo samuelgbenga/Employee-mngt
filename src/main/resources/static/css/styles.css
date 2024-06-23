@@ -50,3 +50,32 @@ body {
     overflow-y: auto;
     height: 100vh;
 }
+
+/*# login style begins */
+
+#login-body{
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#login-body .login-container {
+    max-width: 400px;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+#login-body .login-container h2 {
+    margin-bottom: 1.5rem;
+}
+#login-body .form-group {
+    margin-bottom: 1rem;
+}
+#login-body .btn-primary {
+    width: 100%;
+}
+
+/*# login style ends */

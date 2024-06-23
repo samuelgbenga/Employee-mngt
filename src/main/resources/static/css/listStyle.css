@@ -1,0 +1,109 @@
+.main-content .container-employee,
+.main-content .container-salary,
+.main-content .container-attendance,
+.main-content .container-leave
+{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.main-content .container-employee .table,
+.main-content .container-salary .table,
+.main-content .container-attendance .table,
+.main-content .container-leave .table
+{
+
+    display: grid;
+    grid-template-columns: 1fr; /* Single column */
+    grid-template-rows: 45px auto; /* Fixed height for the top row, flexible height for the bottom row */
+    grid-column-gap: 1px; /* Gap between columns */
+    grid-row-gap: 1px; /* Gap between rows */
+
+}
+
+.container-employee .table .thead,
+.container-employee .table .tbody,
+.container-salary .table .thead,
+.container-salary .table .tbody,
+.container-attendance .table .thead,
+.container-attendance .table .tbody,
+.container-leave .table .thead,
+.container-leave .table .tbody
+{
+    /*border: 1px solid black;  Add a 1px solid black border to each row */
+    padding: 5px; /* Optional: Add some padding for better readability */
+}
+
+.container-employee .thead .tr,
+.container-employee .tbody .tr .innerTr-main-info,
+.container-employee .tbody .tr .innerTr-updateInfo
+{
+    display: grid;
+    grid-template-columns: 5% 15% 10% 25% 25% 20%;
+    grid-auto-rows: 1fr;
+
+    width: 100%; /* Ensures the grid container fits the parent width */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.container-salary .thead .tr,
+.container-salary .tbody .tr .innerTr-main-info,
+.container-salary .tbody .tr .innerTr-updateInfo,
+.container-attendance .thead .tr,
+.container-attendance .tbody .tr .innerTr-main-info,
+.container-attendance .tbody .tr .innerTr-updateInfo
+{
+    display: grid;
+    grid-template-columns:  20% 20% 15% 25% 20%;
+    grid-auto-rows: 1fr;
+
+    width: 100%; /* Ensures the grid container fits the parent width */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.container-leave .thead .tr,
+.container-leave .tbody .tr .innerTr-main-info,
+.container-leave .tbody .tr .innerTr-updateInfo
+{
+    display: grid;
+    grid-template-columns:  20% 20% 30% 10% 10% 10%;
+    grid-auto-rows: 1fr;
+
+    width: 100%; /* Ensures the grid container fits the parent width */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+
+}
+
+
+.container-employee .tbody .tr .td,
+.container-employee .thead .tr .th,
+.container-salary .tbody .tr .td,
+.container-salary .thead .tr .th,
+.container-attendance .tbody .tr .td,
+.container-attendance .thead .tr .th,
+.container-leave .tbody .tr .td,
+.container-leave .thead .tr .th
+{
+    border: 1px solid black;
+    white-space: nowrap;
+    overflow-x: auto;
+    padding: 10px 5px;
+}
+
+.container-salary .tbody .tr .td.actions,
+.container-employee .tbody .tr .td.actions,
+.container-attendance .tbody .tr .td.actions,
+.container-leave .tbody .tr .td.actions
+{
+    display: flex;
+}
+
+.main-content .add-form-container{
+    display: flex;
+    justify-content: space-evenly;
+}
+.main-content .add-form-container .data-group{
+    display: flex;
+    flex-direction: column;
+}
